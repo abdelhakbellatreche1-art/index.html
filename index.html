@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر الملابس الجزائري</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            direction: rtl;
+        }
+
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* الغلاف */
+        #banner {
+            position: relative;
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        #banner img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.6);
+            padding: 20px 40px;
+            border-radius: 15px;
+            width: 70%;
+        }
+
+        .banner-text h2 { margin: 0; font-size: 24px; }
+        .banner-text p { margin: 10px 0 0; font-size: 16px; }
+
+        /* سلة المشتريات الثابتة */
+        .cart-status {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* المنتجات */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price {
+            color: #e67e22;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .card input, .card select {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .buy-btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 90%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .buy-btn:hover { background: #444; }
+
+        /* قائمة المشتريات */
+        #cartItems {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        #items li {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-right: 5px solid #27ae60;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .remove-btn {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #delivery {
+            background: #fff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px dashed #27ae60;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519" alt="لوغو">
+    <h1>متجر الملابس الجزائري</h1>
+</header>
+
+<section id="banner">
+    <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c" alt="غلاف المتجر">
+    <div class="banner-text">
+        <h2>أهلاً بكم في متجرنا العشري!</h2>
+        <p>تشكيلة رائعة بأسعار تنافسية من 1500 إلى 5000 دج</p>
+    </div>
+</section>
+
+<div class="cart-status">
+    🛒 السلة: <span id="count">0</span> منتج | المجموع: <span id="total">0</span> دج
+</div>
+
+<section class="products">
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1593032465171-8c5f6b3f5d52" alt="قميص صيفي">
+        <h3>قميص صيفي قطني</h3>
+        <p class="price">1500 دج</p>
+        <select id="color1">
+            <option value="أحمر">أحمر</option>
+            <option value="أزرق">أزرق</option>
+            <option value="أخضر">أخضر</option>
+        </select>
+        <input type="text" placeholder="المقاس أو ملاحظة..." id="note1">
+        <button class="buy-btn" onclick="addToCart('قميص صيفي', 1500, 'note1', 'color1')">إضافة للسلة</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c" alt="قميص أسود">
+        <h3>قميص كلاسيك أسود</h3>
+        <p class="price">1800 دج</p>
+        <select id="color2">
+            <option value="أسود">أسود</option>
+            <option value="رمادي">رمادي</option>
+        </select>
+        <input type="text" placeholder="المقاس أو ملاحظة..." id="note2">
+        <button class="buy-btn" onclick="addToCart('قميص أسود', 1800, 'note2', 'color2')">إضافة للسلة</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246" alt="سروال جينز">
+        <h3>سروال جينز أصلي</h3>
+        <p class="price">3000 دج</p>
+        <select id="color3">
+            <option value="أزرق">أزرق</option>
+            <option value="أسود">أسود</option>
+        </select>
+        <input type="text" placeholder="المقاس..." id="note3">
+        <button class="buy-btn" onclick="addToCart('سروال جينز', 3000, 'note3', 'color3')">إضافة للسلة</button>
+    </div>
+</section>
+
+<div id="cartItems">
+    <h3>📦 تفاصيل طلبيتك:</h3>
+    <ul id="items" style="padding: 0;"></ul>
+</div>
+
+<div id="delivery">
+    <h3>🚚 معلومات التوصيل</h3>
+    <p>للطلب والاستفسار اتصل بنا: <strong style="color: #27ae60;">0783147002</strong></p>
+    <p>التوصيل متوفر لـ 58 ولاية سارعوا بالطلب!</p>
+</div>
+
+<footer>
+    &copy; 2024 متجر الملابس الجزائري - صنع بكل حب في الجزائر
+</footer>
+
+<script>
+    let count = 0;
+    let total = 0;
+
+    function addToCart(name, price, noteId, colorId) {
+        let note = document.getElementById(noteId).value;
+        let color = document.getElementById(colorId).value;
+        
+        count++;
+        total += price;
+
+        document.getElementById("count").innerText = count;
+        document.getElementById("total").innerText = total;
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+            <span><strong>${name}</strong> (${color}) ${note ? '- ' + note : ''} - ${price} دج</span>
+            <button class="remove-btn" onclick="removeItem(this, ${price})">حذف</button>
+        `;
+        document.getElementById("items").appendChild(li);
+
+        // مسح خانة الملاحظات بعد الإضافة
+        document.getElementById(noteId).value = "";
+    }
+
+    function removeItem(btn, price) {
+        btn.parentElement.remove();
+        count--;
+        total -= price;
+
+        document.getElementById("count").innerText = count;
+        document.getElementById("total").innerText = total;
+    }
+</script>
+
+</body>
+</html>
