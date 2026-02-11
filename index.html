@@ -3,152 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DZ-Style | متجر الملابس الجزائري</title>
+    <title>DZ-Style | متجر الملابس من المدية</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Lalezar&family=Cairo:wght@700&display=swap" rel="stylesheet">
     
     <style>
         :root { --main-green: #27ae60; --dark: #111; }
-        body { font-family: 'Tajawal', sans-serif; background-color: #f8f9fa; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Tajawal', sans-serif; background-color: #f0f2f5; margin: 0; padding-bottom: 50px; }
 
-        /* شاشة الغلاف الترحيبية */
+        /* شاشة الغلاف */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200') no-repeat center center/cover;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 2000; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-            color: white; text-align: center;
+            z-index: 2000; transition: 0.8s; color: white; text-align: center;
         }
+        .enter-btn { padding: 15px 50px; font-size: 22px; background: var(--main-green); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 20px; }
 
-        #splash-screen h1 { font-family: 'Lalezar', cursive; font-size: 60px; margin-bottom: 10px; color: var(--main-green); }
-        #splash-screen p { font-size: 20px; margin-bottom: 30px; }
+        .main-content { opacity: 0; transition: 1s; }
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
 
-        .enter-btn {
-            padding: 15px 40px; font-size: 22px; background: var(--main-green);
-            color: white; border: none; border-radius: 50px; cursor: pointer;
-            font-weight: bold; transition: 0.3s; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
-        }
-        .enter-btn:hover { transform: scale(1.1); background: #2ecc71; }
-
-        /* ستايل الموقع الرئيسي (مخفي في البداية) */
-        .main-content { opacity: 0; transition: opacity 1s ease; padding-top: 20px; }
-
-        /* تنسيقات المتجر */
-        header { background: var(--dark); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--main-green); }
-        .container { max-width: 1000px; margin: auto; padding: 20px; }
-        .custom-panel { background: white; padding: 25px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-right: 8px solid var(--main-green); }
-        #namePreview { font-size: 45px; text-align: center; margin: 30px 0; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+        /* معرض المنتجات */
+        .section-title { text-align: center; margin: 40px 0 20px; color: var(--dark); border-bottom: 3px solid var(--main-green); display: inline-block; padding-bottom: 10px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; transition: 0.3s; border: 1px solid #eee; }
+        .product-card:hover { transform: scale(1.02); }
+        .product-card img { width: 100%; height: 320px; object-fit: cover; }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; }
-        .product-card img { width: 100%; height: 300px; object-fit: cover; }
-        
-        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; }
-        .buy-btn { background: var(--dark); color: white; font-weight: bold; cursor: pointer; }
+        input, select, button { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; }
+        .buy-btn { background: var(--dark); color: white; cursor: pointer; border: none; font-weight: bold; transition: 0.3s; }
         .buy-btn:hover { background: var(--main-green); }
 
-        .wa-footer { background: #25D366; color: white; text-decoration: none; display: block; padding: 20px; text-align: center; border-radius: 15px; font-weight: bold; font-size: 20px; margin-top: 20px; }
+        /* لوحة التصميم */
+        .panel { background: white; padding: 25px; border-radius: 20px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-right: 10px solid var(--main-green); }
+        #namePreview { font-size: 45px; text-align: center; margin: 20px 0; min-height: 80px; display: flex; align-items: center; justify-content: center; border: 2px dashed #eee; border-radius: 10px; }
+
+        /* حساب الشحن */
+        .checkout-box { background: #fff; padding: 25px; border-radius: 20px; border: 2px solid var(--dark); }
+        .price-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 18px; }
+        .total-row { font-size: 24px; font-weight: bold; color: var(--main-green); border: none; }
+
+        .wa-btn { background: #25D366; color: white; text-decoration: none; display: block; padding: 20px; text-align: center; border-radius: 15px; font-weight: bold; font-size: 20px; margin-top: 20px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
     </style>
 </head>
 <body>
 
 <div id="splash-screen">
-    <h1>DZ-STYLE</h1>
-    <p>مرحباً بك في عالم الأناقة والطباعة المخصصة</p>
-    <button class="enter-btn" onclick="enterSite()">دخول المتجر 🛒</button>
+    <h1 style="font-family:'Lalezar'; font-size:70px; margin:0; color:var(--main-green);">DZ-STYLE</h1>
+    <p>الأناقة تبدأ من قلب المدية لـ 58 ولاية</p>
+    <button class="enter-btn" onclick="enterSite()">تسوق الآن 🛒</button>
 </div>
 
 <div id="main-site" class="main-content">
-    <header>
-        <h1>متجر الملابس الجزائري 🇩🇿</h1>
+    <header style="background:var(--dark); color:white; padding:30px; text-align:center;">
+        <h1 style="margin:0;">متجر الأناقة الجزائري 🇩🇿</h1>
+        <p style="margin:5px 0 0;">شحن سريع انطلاقاً من ولاية المدية</p>
     </header>
 
     <div class="container">
-        <div class="custom-panel">
-            <h3>🎨 صمم قميصك الآن</h3>
-            <input type="text" id="custName" placeholder="اكتب اسمك هنا..." oninput="updatePreview()">
-            <div style="display: flex; gap: 10px;">
+        
+        <center><h2 class="section-title">1. اختر نوع القميص (15 موديل)</h2></center>
+        <div class="products-grid" id="product-list"></div>
+
+        <center><h2 class="section-title">2. أضف لمستك الخاصة (اختياري)</h2></center>
+        <div class="panel">
+            <h3 style="text-align:center; margin-top:0;">🎨 تصميم الطباعة المخصصة</h3>
+            <input type="text" id="custName" placeholder="اكتب اسمك أو عبارتك المفضلة هنا..." oninput="updatePreview()">
+            <div style="display:flex; gap:10px;">
                 <select id="fontPicker" onchange="updatePreview()">
-                    <option value="'Tajawal'">خط تجول</option>
-                    <option value="'Lalezar'">خط لوزار</option>
-                    <option value="'Cairo'">خط كايرو</option>
+                    <option value="'Tajawal'">خط تجول (عصري)</option>
+                    <option value="'Lalezar'">خط لوزار (عريض)</option>
+                    <option value="'Cairo'">خط كايرو (تقني)</option>
+                    <option value="'Amiri'">خط أميري (أصيل)</option>
                 </select>
-                <input type="color" id="colorPicker" value="#27ae60" oninput="updatePreview()" style="width: 80px; height: 50px;">
+                <input type="color" id="colorPicker" value="#27ae60" oninput="updatePreview()" style="width:100px; height:50px; cursor:pointer;">
             </div>
-            <div id="namePreview">معاينة الاسم</div>
+            <div id="namePreview">معاينة التصميم</div>
         </div>
 
-        <div class="products-grid">
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500" alt="Oversize">
-                <div style="padding: 15px;">
-                    <h4>تيشرت Oversize</h4>
-                    <p style="color: #e67e22; font-weight: bold;">2900 دج</p>
-                    <input type="text" id="s1" placeholder="المقاس">
-                    <button class="buy-btn" onclick="add('Oversize', 's1')">إضافة للطلب</button>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500" alt="Hoodie">
-                <div style="padding: 15px;">
-                    <h4>سترة Hoodie</h4>
-                    <p style="color: #e67e22; font-weight: bold;">4500 دج</p>
-                    <input type="text" id="s2" placeholder="المقاس">
-                    <button class="buy-btn" onclick="add('Hoodie', 's2')">إضافة للطلب</button>
-                </div>
-            </div>
-        </div>
+        <center><h2 class="section-title">3. معلومات الشحن والحساب</h2></center>
+        <div class="checkout-box">
+            <input type="text" id="userName" placeholder="الاسم الكامل للزبون">
+            <label style="display:block; margin:10px 0 5px;">الولاية (مركز الشحن: المدية):</label>
+            <select id="wilaya" onchange="calculateShipping()">
+                <option value="0" data-fee="0">-- اختر ولايتك --</option>
+                <option value="المدية" data-fee="100">26- المدية (مركزنا - 100 دج)</option>
+                <option value="البليدة" data-fee="200">09- البليدة (200 دج)</option>
+                <option value="الجزائر" data-fee="300">16- الجزائر العاصمة (300 دج)</option>
+                <option value="تيبازة" data-fee="300">42- تيبازة (300 دج)</option>
+                <option value="عين الدفلة" data-fee="300">44- عين الدفلة (300 دج)</option>
+                <option value="سطيف" data-fee="450">19- سطيف (450 دج)</option>
+                <option value="وهران" data-fee="500">31- وهران (500 دج)</option>
+                <option value="قسنطينة" data-fee="500">25- قسنطينة (500 دج)</option>
+                <option value="ورقلة" data-fee="700">30- ورقلة (700 دج)</option>
+                <option value="تمنراست" data-fee="850">11- تمنراست (850 دج)</option>
+                <option value="أدرار" data-fee="850">01- أدرار (850 دج)</option>
+                </select>
+            <input type="text" id="baladia" placeholder="البلدية">
 
-        <div class="custom-panel" style="margin-top: 40px; border-right-color: #333;">
-            <h3>🚚 التوصيل لكل الولايات</h3>
-            <input type="text" id="userName" placeholder="الاسم الكامل">
-            <select id="wilaya">
-                <option value="">اختر ولايتك</option>
-                <script>
-                    const wilayas = ["أدرار","الشلف","الجزائر","سطيف","وهران"]; // أضف البقية هنا
-                    wilayas.forEach(w => document.write(`<option>${w}</option>`));
-                </script>
-            </select>
-            <a href="#" class="wa-footer" onclick="send()">إرسال الطلب (0783147002)</a>
+            <div style="margin-top:20px; background:#f9f9f9; padding:20px; border-radius:15px; border:1px solid #eee;">
+                <div class="price-row"><span>سعر المنتجات:</span> <span><span id="items-price">0</span> دج</span></div>
+                <div class="price-row"><span>سعر الشحن (من المدية):</span> <span><span id="shipping-fee">0</span> دج</span></div>
+                <div class="price-row total-row" style="color:var(--dark); border-top:2px solid #ddd; padding-top:15px;"><span>المجموع الإجمالي:</span> <span><span id="total-price">0</span> دج</span></div>
+            </div>
+
+            <a href="#" class="wa-btn" onclick="send()">تأكيد الطلب عبر واتساب ✅</a>
         </div>
     </div>
 </div>
 
 <script>
-    // وظيفة الدخول للموقع
     function enterSite() {
-        const splash = document.getElementById('splash-screen');
-        const main = document.getElementById('main-site');
-        
-        splash.style.transform = 'translateY(-100%)'; // يختفي الغلاف للأعلى
-        main.style.opacity = '1'; // يظهر الموقع
-        setTimeout(() => splash.style.display = 'none', 800);
+        document.getElementById('splash-screen').style.transform = 'translateY(-100%)';
+        document.getElementById('main-site').style.opacity = '1';
+    }
+
+    // بيانات 15 منتجاً
+    const products = [
+        { n: "تيشرت Oversize أسود", p: 2900, img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400" },
+        { n: "هودي Hoodie رمادي", p: 4500, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400" },
+        { n: "قميص Polo ملكي", p: 3200, img: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=400" },
+        { n: "قميص Linen صيفي", p: 3800, img: "https://images.unsplash.com/photo-1598961942613-ba897716405b?w=400" },
+        { n: "تيشرت قطني أبيض", p: 1900, img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" },
+        { n: "جاكيت Bomber", p: 5500, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400" },
+        { n: "قميص صيفي مطبوع", p: 2800, img: "https://images.unsplash.com/photo-1576566582410-d380720743b0?w=400" },
+        { n: "تيشرت رياضي Pro", p: 2500, img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400" },
+        { n: "قميص رسمي كلاسيك", p: 3900, img: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400" },
+        { n: "هودي Oversize أزرق", p: 4600, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400" },
+        { n: "تيشرت Vintage", p: 2700, img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=400" },
+        { n: "قميص كاروهات", p: 3400, img: "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=400" },
+        { n: "طقم صيفي قطعتين", p: 6800, img: "https://images.unsplash.com/photo-1594932224828-b4b059b6f68d?w=400" },
+        { n: "تيشرت جيب مميز", p: 2300, img: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400" },
+        { n: "سترة صوفية ناعمة", p: 4900, img: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400" }
+    ];
+
+    let itemsTotal = 0;
+    let shippingFee = 0;
+    let cart = [];
+
+    const list = document.getElementById('product-list');
+    products.forEach((prod, i) => {
+        list.innerHTML += `
+            <div class="product-card">
+                <img src="${prod.img}">
+                <div style="padding:15px;">
+                    <h4>${prod.n}</h4>
+                    <p style="color:#e67e22; font-weight:bold; font-size:20px;">${prod.p} دج</p>
+                    <input type="text" id="s${i}" placeholder="المقاس (M, L, XL...)">
+                    <button class="buy-btn" onclick="addToCart('${prod.n}', ${prod.p}, 's${i}')">إضافة للطلبية 🛒</button>
+                </div>
+            </div>`;
+    });
+
+    function addToCart(name, price, sId) {
+        const s = document.getElementById(sId).value;
+        if(!s) return alert("يرجى كتابة المقاس أولاً");
+        cart.push({name, price, s});
+        itemsTotal += price;
+        updateUI();
+        alert("تمت الإضافة بنجاح!");
+    }
+
+    function calculateShipping() {
+        const select = document.getElementById('wilaya');
+        shippingFee = parseInt(select.options[select.selectedIndex].getAttribute('data-fee')) || 0;
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('items-price').innerText = itemsTotal;
+        document.getElementById('shipping-fee').innerText = shippingFee;
+        document.getElementById('total-price').innerText = itemsTotal + shippingFee;
     }
 
     function updatePreview() {
         const text = document.getElementById('custName').value;
-        const font = document.getElementById('fontPicker').value;
-        const color = document.getElementById('colorPicker').value;
         const preview = document.getElementById('namePreview');
-        preview.innerText = text || "معاينة الاسم";
-        preview.style.fontFamily = font;
-        preview.style.color = color;
-    }
-
-    let cart = [];
-    function add(n, sId) {
-        const s = document.getElementById(sId).value;
-        if(!s) return alert("ادخل المقاس");
-        cart.push(`${n} مقاس ${s}`);
-        alert("تمت الإضافة!");
+        preview.innerText = text || "معاينة التصميم";
+        preview.style.fontFamily = document.getElementById('fontPicker').value;
+        preview.style.color = document.getElementById('colorPicker').value;
     }
 
     function send() {
         const user = document.getElementById('userName').value;
-        if(!user || cart.length === 0) return alert("أكمل البيانات");
-        const msg = `طلب جديد:\nالزبون: ${user}\nالتصميم: ${document.getElementById('custName').value}\nالمنتجات:\n${cart.join('\n')}`;
+        const w = document.getElementById('wilaya').value;
+        if(!user || cart.length === 0 || w === "0") return alert("من فضلك اختر القميص والولاية وأكمل بياناتك");
+
+        let msg = `طلب جديد من المتجر (شحن من المدية) 🛒\n`;
+        msg += `الزبون: ${user}\nالولاية: ${w}\nالبلدية: ${document.getElementById('baladia').value}\n`;
+        msg += `التصميم المطلوب: ${document.getElementById('custName').value}\n\n`;
+        msg += `قائمة الطلبات:\n`;
+        cart.forEach(i => msg += `- ${i.name} | مقاس: ${i.s}\n`);
+        msg += `\nسعر المشتريات: ${itemsTotal} دج\nالشحن: ${shippingFee} دج\nالمجموع: ${itemsTotal + shippingFee} دج`;
+        
         window.open(`https://wa.me/213783147002?text=${encodeURIComponent(msg)}`);
     }
 </script>
-
 </body>
 </html>
